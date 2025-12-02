@@ -14,76 +14,123 @@
     <meta property="og:url" content="https://jkkitchen.github.io/wdd330/Final-Project/swimmer-profiles.html">
     <!--Link to Favicon-->
     <link rel="icon" href="/images/clipboard-check.ico">
-    <!--Link to Google Fonts for Winky Sans and Inter-->
+    <!--Link to Google Fonts for Racing Sans One and Monserrat-->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100..900&family=Racing+Sans+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100..900&family=Racing+Sans+One&display=swap"
+        rel="stylesheet">
     <!--Link to CSS Files-->
     <link rel="stylesheet" href="styles/base.css">
     <!--Link to JS Files-->
-    <script src="scripts/profiles.js" type="module"></script>
+    <script src="js/profiles.js" type="module"></script>
 </head>
+
 <body>
     <header class="header" id="main-header"></header>
+    <h2>Welcome to Swim Cut Check!</h2>
+    <div id="user-email"></div>
+    <div id="logout-button-section">
+        <button id="logout-button">Logout</button>
+    </div>
+
     <section class="existing-swimmer-profiles">
-        <img><!--Use API to create profile picture-->
         <div id="template-swimmer"></div>
         <div class="swimmer-times-update">
-            <button id="updateTimes">Update Times</button>
+            <button id="update-times">Update Times</button>
         </div>
     </section>
+
     <section class="add-new-swimmers">
         <button id="add-swimmer">Add New Swimmer</button>
         <form class="hide new-swimmer-form">
             <fieldset>
                 <legend>Customer Name</legend>
-                <label>First Name: <input type="text" name="fname" pattern="[A-Za-z]+" required> <!--Letters Only--></label>
-                <label>Last Name: <input type="text" name="lname" pattern="[A-Za-z]+" required> <!--Letters Only--></label>
-                <label>Birth Date: <input type="text" name="birthdate" placeholder="MM/DD/YYYY" pattern="^(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])\/(19|20)\d\d$" required></label>
+                <label>First Name: <input type="text" name="fname" pattern="[A-Za-z]+" required>
+                    <!--Letters Only--></label>
+                <label>Last Name: <input type="text" name="lname" pattern="[A-Za-z]+" required>
+                    <!--Letters Only--></label>
+                <label>Birth Date: <input type="text" name="birthdate" placeholder="MM/DD/YYYY"
+                        pattern="^(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])\/(19|20)\d\d$" required></label>
             </fieldset>
             <fieldset>
                 <legend>Short Course Times</legend>
-                <label>50 FR SCY: <input type="text" name="50FRSCY" pattern="^\d{1,2}:[0-5][0-9](\.\d{1,2})?$" placeholder="00:00.00"></label>
-                <label>100 FR SCY: <input type="text" name="100FRSCY" pattern="^\d{1,2}:[0-5][0-9](\.\d{1,2})?$" placeholder="00:00.00"></label>
-                <label>200 FR SCY: <input type="text" name="200FRSCY" pattern="^\d{1,2}:[0-5][0-9](\.\d{1,2})?$" placeholder="00:00.00"></label>
-                <label>500 FR SCY: <input type="text" name="500FRSCY" pattern="^\d{1,2}:[0-5][0-9](\.\d{1,2})?$" placeholder="00:00.00"></label>
-                <label>1000 FR SCY: <input type="text" name="1000FRSCY" pattern="^\d{1,2}:[0-5][0-9](\.\d{1,2})?$" placeholder="00:00.00"></label>
-                <label>1650 FR SCY: <input type="text" name="1650FRSCY" pattern="^\d{1,2}:[0-5][0-9](\.\d{1,2})?$" placeholder="00:00.00"></label>
-                <label>50 BK SCY: <input type="text" name="50BKSCY" pattern="^\d{1,2}:[0-5][0-9](\.\d{1,2})?$" placeholder="00:00.00"></label>
-                <label>100 BK SCY: <input type="text" name="100BKSCY" pattern="^\d{1,2}:[0-5][0-9](\.\d{1,2})?$" placeholder="00:00.00"></label>
-                <label>200 BK SCY: <input type="text" name="200BKSCY" pattern="^\d{1,2}:[0-5][0-9](\.\d{1,2})?$" placeholder="00:00.00"></label>
-                <label>50 BR SCY: <input type="text" name="50BRSCY" pattern="^\d{1,2}:[0-5][0-9](\.\d{1,2})?$" placeholder="00:00.00"></label>
-                <label>100 BR SCY: <input type="text" name="100BRSCY" pattern="^\d{1,2}:[0-5][0-9](\.\d{1,2})?$" placeholder="00:00.00"></label>
-                <label>200 BR SCY: <input type="text" name="200BRSCY" pattern="^\d{1,2}:[0-5][0-9](\.\d{1,2})?$" placeholder="00:00.00"></label>
-                <label>50 FL SCY: <input type="text" name="50FLSCY" pattern="^\d{1,2}:[0-5][0-9](\.\d{1,2})?$" placeholder="00:00.00"></label>
-                <label>100 FL SCY: <input type="text" name="100FLSCY" pattern="^\d{1,2}:[0-5][0-9](\.\d{1,2})?$" placeholder="00:00.00"></label>
-                <label>200 FL SCY: <input type="text" name="200FLSCY" pattern="^\d{1,2}:[0-5][0-9](\.\d{1,2})?$" placeholder="00:00.00"></label>
-                <label>100 IM SCY: <input type="text" name="100IMSCY" pattern="^\d{1,2}:[0-5][0-9](\.\d{1,2})?$" placeholder="00:00.00"></label>
-                <label>200 IM SCY: <input type="text" name="200IMSCY" pattern="^\d{1,2}:[0-5][0-9](\.\d{1,2})?$" placeholder="00:00.00"></label>
-                <label>400 IM SCY: <input type="text" name="400IMSCY" pattern="^\d{1,2}:[0-5][0-9](\.\d{1,2})?$" placeholder="00:00.00"></label>
+                <label>50 FR SCY: <input type="text" name="50FRSCY" pattern="^\d{1,2}:[0-5][0-9](\.\d{1,2})?$"
+                        placeholder="00:00.00"></label>
+                <label>100 FR SCY: <input type="text" name="100FRSCY" pattern="^\d{1,2}:[0-5][0-9](\.\d{1,2})?$"
+                        placeholder="00:00.00"></label>
+                <label>200 FR SCY: <input type="text" name="200FRSCY" pattern="^\d{1,2}:[0-5][0-9](\.\d{1,2})?$"
+                        placeholder="00:00.00"></label>
+                <label>500 FR SCY: <input type="text" name="500FRSCY" pattern="^\d{1,2}:[0-5][0-9](\.\d{1,2})?$"
+                        placeholder="00:00.00"></label>
+                <label>1000 FR SCY: <input type="text" name="1000FRSCY" pattern="^\d{1,2}:[0-5][0-9](\.\d{1,2})?$"
+                        placeholder="00:00.00"></label>
+                <label>1650 FR SCY: <input type="text" name="1650FRSCY" pattern="^\d{1,2}:[0-5][0-9](\.\d{1,2})?$"
+                        placeholder="00:00.00"></label>
+                <label>50 BK SCY: <input type="text" name="50BKSCY" pattern="^\d{1,2}:[0-5][0-9](\.\d{1,2})?$"
+                        placeholder="00:00.00"></label>
+                <label>100 BK SCY: <input type="text" name="100BKSCY" pattern="^\d{1,2}:[0-5][0-9](\.\d{1,2})?$"
+                        placeholder="00:00.00"></label>
+                <label>200 BK SCY: <input type="text" name="200BKSCY" pattern="^\d{1,2}:[0-5][0-9](\.\d{1,2})?$"
+                        placeholder="00:00.00"></label>
+                <label>50 BR SCY: <input type="text" name="50BRSCY" pattern="^\d{1,2}:[0-5][0-9](\.\d{1,2})?$"
+                        placeholder="00:00.00"></label>
+                <label>100 BR SCY: <input type="text" name="100BRSCY" pattern="^\d{1,2}:[0-5][0-9](\.\d{1,2})?$"
+                        placeholder="00:00.00"></label>
+                <label>200 BR SCY: <input type="text" name="200BRSCY" pattern="^\d{1,2}:[0-5][0-9](\.\d{1,2})?$"
+                        placeholder="00:00.00"></label>
+                <label>50 FL SCY: <input type="text" name="50FLSCY" pattern="^\d{1,2}:[0-5][0-9](\.\d{1,2})?$"
+                        placeholder="00:00.00"></label>
+                <label>100 FL SCY: <input type="text" name="100FLSCY" pattern="^\d{1,2}:[0-5][0-9](\.\d{1,2})?$"
+                        placeholder="00:00.00"></label>
+                <label>200 FL SCY: <input type="text" name="200FLSCY" pattern="^\d{1,2}:[0-5][0-9](\.\d{1,2})?$"
+                        placeholder="00:00.00"></label>
+                <label>100 IM SCY: <input type="text" name="100IMSCY" pattern="^\d{1,2}:[0-5][0-9](\.\d{1,2})?$"
+                        placeholder="00:00.00"></label>
+                <label>200 IM SCY: <input type="text" name="200IMSCY" pattern="^\d{1,2}:[0-5][0-9](\.\d{1,2})?$"
+                        placeholder="00:00.00"></label>
+                <label>400 IM SCY: <input type="text" name="400IMSCY" pattern="^\d{1,2}:[0-5][0-9](\.\d{1,2})?$"
+                        placeholder="00:00.00"></label>
             </fieldset>
             <fieldset>
                 <legend>Long Course Times</legend>
-                <label>50 FR LCM: <input type="text" name="50FRLCM" pattern="^\d{1,2}:[0-5][0-9](\.\d{1,2})?$" placeholder="00:00.00"></label>
-                <label>100 FR LCM: <input type="text" name="100FRLCM" pattern="^\d{1,2}:[0-5][0-9](\.\d{1,2})?$" placeholder="00:00.00"></label>
-                <label>200 FR LCM: <input type="text" name="200FRLCM" pattern="^\d{1,2}:[0-5][0-9](\.\d{1,2})?$" placeholder="00:00.00"></label>
-                <label>400 FR LCM: <input type="text" name="400FRLCM" pattern="^\d{1,2}:[0-5][0-9](\.\d{1,2})?$" placeholder="00:00.00"></label>
-                <label>800 FR LCM: <input type="text" name="800FRLCM" pattern="^\d{1,2}:[0-5][0-9](\.\d{1,2})?$" placeholder="00:00.00"></label>
-                <label>1500 FR LCM: <input type="text" name="1500FRLCM" pattern="^\d{1,2}:[0-5][0-9](\.\d{1,2})?$" placeholder="00:00.00"></label>
-                <label>50 BK LCM: <input type="text" name="50BKLCM" pattern="^\d{1,2}:[0-5][0-9](\.\d{1,2})?$" placeholder="00:00.00"></label>
-                <label>100 BK LCM: <input type="text" name="100BKLCM" pattern="^\d{1,2}:[0-5][0-9](\.\d{1,2})?$" placeholder="00:00.00"></label>
-                <label>200 BK LCM: <input type="text" name="200BKLCM" pattern="^\d{1,2}:[0-5][0-9](\.\d{1,2})?$" placeholder="00:00.00"></label>
-                <label>50 BR LCM: <input type="text" name="50BRLCM" pattern="^\d{1,2}:[0-5][0-9](\.\d{1,2})?$" placeholder="00:00.00"></label>
-                <label>100 BR LCM: <input type="text" name="100BRLCM" pattern="^\d{1,2}:[0-5][0-9](\.\d{1,2})?$" placeholder="00:00.00"></label>
-                <label>200 BR LCM: <input type="text" name="200BRLCM" pattern="^\d{1,2}:[0-5][0-9](\.\d{1,2})?$" placeholder="00:00.00"></label>
-                <label>50 FL LCM: <input type="text" name="50FLLCM" pattern="^\d{1,2}:[0-5][0-9](\.\d{1,2})?$" placeholder="00:00.00"></label>
-                <label>100 FL LCM: <input type="text" name="100FLLCM" pattern="^\d{1,2}:[0-5][0-9](\.\d{1,2})?$" placeholder="00:00.00"></label>
-                <label>200 FL LCM: <input type="text" name="200FLLCM" pattern="^\d{1,2}:[0-5][0-9](\.\d{1,2})?$" placeholder="00:00.00"></label>
-                <label>100 IM LCM: <input type="text" name="100IMLCM" pattern="^\d{1,2}:[0-5][0-9](\.\d{1,2})?$" placeholder="00:00.00"></label>
-                <label>200 IM LCM: <input type="text" name="200IMLCM" pattern="^\d{1,2}:[0-5][0-9](\.\d{1,2})?$" placeholder="00:00.00"></label>
-                <label>400 IM LCM: <input type="text" name="400IMLCM" pattern="^\d{1,2}:[0-5][0-9](\.\d{1,2})?$" placeholder="00:00.00"></label>
+                <label>50 FR LCM: <input type="text" name="50FRLCM" pattern="^\d{1,2}:[0-5][0-9](\.\d{1,2})?$"
+                        placeholder="00:00.00"></label>
+                <label>100 FR LCM: <input type="text" name="100FRLCM" pattern="^\d{1,2}:[0-5][0-9](\.\d{1,2})?$"
+                        placeholder="00:00.00"></label>
+                <label>200 FR LCM: <input type="text" name="200FRLCM" pattern="^\d{1,2}:[0-5][0-9](\.\d{1,2})?$"
+                        placeholder="00:00.00"></label>
+                <label>400 FR LCM: <input type="text" name="400FRLCM" pattern="^\d{1,2}:[0-5][0-9](\.\d{1,2})?$"
+                        placeholder="00:00.00"></label>
+                <label>800 FR LCM: <input type="text" name="800FRLCM" pattern="^\d{1,2}:[0-5][0-9](\.\d{1,2})?$"
+                        placeholder="00:00.00"></label>
+                <label>1500 FR LCM: <input type="text" name="1500FRLCM" pattern="^\d{1,2}:[0-5][0-9](\.\d{1,2})?$"
+                        placeholder="00:00.00"></label>
+                <label>50 BK LCM: <input type="text" name="50BKLCM" pattern="^\d{1,2}:[0-5][0-9](\.\d{1,2})?$"
+                        placeholder="00:00.00"></label>
+                <label>100 BK LCM: <input type="text" name="100BKLCM" pattern="^\d{1,2}:[0-5][0-9](\.\d{1,2})?$"
+                        placeholder="00:00.00"></label>
+                <label>200 BK LCM: <input type="text" name="200BKLCM" pattern="^\d{1,2}:[0-5][0-9](\.\d{1,2})?$"
+                        placeholder="00:00.00"></label>
+                <label>50 BR LCM: <input type="text" name="50BRLCM" pattern="^\d{1,2}:[0-5][0-9](\.\d{1,2})?$"
+                        placeholder="00:00.00"></label>
+                <label>100 BR LCM: <input type="text" name="100BRLCM" pattern="^\d{1,2}:[0-5][0-9](\.\d{1,2})?$"
+                        placeholder="00:00.00"></label>
+                <label>200 BR LCM: <input type="text" name="200BRLCM" pattern="^\d{1,2}:[0-5][0-9](\.\d{1,2})?$"
+                        placeholder="00:00.00"></label>
+                <label>50 FL LCM: <input type="text" name="50FLLCM" pattern="^\d{1,2}:[0-5][0-9](\.\d{1,2})?$"
+                        placeholder="00:00.00"></label>
+                <label>100 FL LCM: <input type="text" name="100FLLCM" pattern="^\d{1,2}:[0-5][0-9](\.\d{1,2})?$"
+                        placeholder="00:00.00"></label>
+                <label>200 FL LCM: <input type="text" name="200FLLCM" pattern="^\d{1,2}:[0-5][0-9](\.\d{1,2})?$"
+                        placeholder="00:00.00"></label>
+                <label>100 IM LCM: <input type="text" name="100IMLCM" pattern="^\d{1,2}:[0-5][0-9](\.\d{1,2})?$"
+                        placeholder="00:00.00"></label>
+                <label>200 IM LCM: <input type="text" name="200IMLCM" pattern="^\d{1,2}:[0-5][0-9](\.\d{1,2})?$"
+                        placeholder="00:00.00"></label>
+                <label>400 IM LCM: <input type="text" name="400IMLCM" pattern="^\d{1,2}:[0-5][0-9](\.\d{1,2})?$"
+                        placeholder="00:00.00"></label>
             </fieldset>
-            <div id="submit-button">
+            <div id="new-swimmer-submit-button">
                 <input type="submit" id="new-swimmer-submit" value="Submit Swimmer Profile">
             </div>
         </form>
@@ -91,4 +138,5 @@
 
     <footer class="footer" id="main-footer"></footer>
 </body>
+
 </html>
