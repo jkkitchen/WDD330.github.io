@@ -22,7 +22,7 @@ document.querySelector("#login-submit").addEventListener("click", async (event) 
         //enter email and password into function userLogin
         await userLogin(email, password);
         //Redirect to user swimmer profiles page if login is successful
-        window.location.href = "/swimmer-profiles.html"
+        window.location.href = "swimmer-profiles.html"
     } catch (err) {
         //Display error message if login is not successful
         loginMessage.textContent = err.message;
