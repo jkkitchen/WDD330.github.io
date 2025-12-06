@@ -1,4 +1,4 @@
-import { getAuth } from "./firebase/auth";
+import { getAuth } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
 
 export default class MockAPIData {
     //CONSTRUCTOR:
