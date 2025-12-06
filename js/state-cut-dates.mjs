@@ -7,38 +7,30 @@ export default class StateCutDates {
 
     //METHODS
     async init() {
-        const results = await this.dataSource.getDates();
+        const results = await this.dataSource.getDates();        
+        //Get form from state-cuts.html        
+        const form = document.querySelector('#state-dates-form');
         //Set this.dates value based on whether there is anything in dataSource (any dates are saved)     
         if (results.length > 0) {
             this.dates = results[0];
+            //Hide the form since there are existing dates
+            form.classList.add('hide');
+            //Call function to display the dates
+            this.renderDates();
         } else {
             this.dates = null;
+            //Show the form so dates can be entered
+            form.classList.remove('hide');
         }
-
-        this.renderDates();
     }
 
     async renderDates() {
-        //Get elements from state-cuts.html
-        const displayDiv = document.querySelector('#dates-and-update-button');
-        const form = document.querySelector('#state-dates-form');
-
-        //Use if statement to determine if there are dates saved, or if this is the first time they are being entered
-        if (this.dates) {
-            //Show existing dates
-            displayDiv.classList.remove('hide');
-            form.classList.add('hide');
-            displayDates(this.dates);
-        } else {
-            //Enter new dates in form, hide existing dates and update button
-            displayDiv.classList.add('hide');
-            form.classList.remove('hide');
-        }             
+        displayDates(this.dates);       
     }
     
-    async saveDates(form) {
+    async saveDates() {
         //Get form from html
-        form = document.querySelector('#state-dates-form');
+        const form = document.querySelector('#state-dates-form');
         //Get values from form, these are the values I assigned on MockAPI
         const shortCourse = form.querySelector('#short-course-date').value;
         const longCourse = form.querySelector('#long-course-date').value;
@@ -53,21 +45,10 @@ export default class StateCutDates {
         } else {
             //Create new record
             savedDates = await this.dataSource.addDates(datesObject);
-        }
+        }        
 
         //Update local value
         this.dates = savedDates; //Now contains id assigned by MockAPI as well
-
-        //Hide form and show updated dates
-        document.querySelector('#dates-and-update-button').classList.remove('hide');
-        document.querySelector('#state-dates-form').classList.add('hide');
-
-        //Call function to render updated dates
-        displayDates(this.dates);
-
-        //Clear Form
-        form.querySelector('#short-course-date').value = '';
-        form.querySelector('#long-course-date').value = '';
     }
 }
 

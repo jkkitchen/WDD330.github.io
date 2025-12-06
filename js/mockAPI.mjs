@@ -89,7 +89,7 @@ export default class MockAPIData {
     async updateDates(id, dates) {
         const user = this.getCurrentUser(true); //will throw an error if not logged in
 
-        //Save swimmer to user id
+        //Save dates to user id
         dates.userId = user.email;
 
         const response = await fetch(`${this.baseURL}/${id}`, {

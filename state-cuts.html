@@ -29,16 +29,21 @@
     <header class="header" id="state-cuts-header"></header>
     <section id="state-dates">
         <h2>South Carolina State Meets Starting Dates</h2>
-        <div class="hide" id="dates-and-update-button">
+        <div id="dates-and-update-button">
             <div id="existing-state-dates"></div>
             <button id="update-dates-button">Update Dates</button>
         </div>
-        <form class=hide id="state-dates-form">
-            <label>Short Course: <input type="date" id="short-course-date" placeholder="MM/DD/YYYY" required></label>
-            <label>Long Course: <input type="date" id="long-course-date" placeholder="MM/DD/YYYY" required></label>            
-            <input type="button" id="state-dates-submit" value="Submit Dates">
-        </form>
-
+        <div id="dates-form-container">
+            <form class="hide form-container" id="state-dates-form">
+                <label>Short Course: <input type="date" id="short-course-date" placeholder="MM/DD/YYYY" required></label>
+                <label>Long Course: <input type="date" id="long-course-date" placeholder="MM/DD/YYYY" required></label>            
+                <input type="submit" id="state-dates-submit" value="Submit Dates">
+            </form>
+        </div>
+    </section>
+    <section id="compare-state-times">
+        <h2>Swimmer State Cuts Comparisons</h2>
+        <div id="swimmer-cut-times"></div>
     </section>
 
 
