@@ -1,0 +1,1 @@
+import{l as n,u as a}from"./auth-CbXENMBb.js";n();const e=document.querySelector("#login-form"),l=document.querySelector("#login-message");document.querySelector("#login-submit").addEventListener("click",async o=>{o.preventDefault();const t=e.email.value,r=e.password.value;try{await a(t,r),window.location.href="swimmer-profiles.html"}catch(s){l.textContent=s.message}});
