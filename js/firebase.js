@@ -18,8 +18,8 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-
+export const auth = getAnalytics(app);
+export { app };
 
 // //This is the code given by the Firebase Website in order to import it:
 
