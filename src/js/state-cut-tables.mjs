@@ -1,3 +1,5 @@
+import stateCuts from '../public/data/SCSwimmingTimes.json' assert { type: 'json' };
+
 export default class StateCutTables {
     //CONSTRUCTOR
     constructor(swimmerDataSource, datesDataSource) {
@@ -10,17 +12,22 @@ export default class StateCutTables {
     //METHODS
     async init() {
         //Call MockAPI functions to get data from MockAPI
-        const swimmerResults = await this.swimmerDataSource.getSwimmers();
-        const datesResults = await this.datesdataSource.getDates()
+        const swimmerResults = await this.swimmersData.getSwimmers();
+        const datesResults = await this.datesData.getDates();
 
         //Set local values
         this.swimmers = swimmerResults;
         this.dates = datesResults;
 
         //Call function to render swimmer info and table with times
-        renderSwimmerTable();
+        this.renderSwimmerTable();
     }
 
+    async renderSwimmerTable() {
+        this.swimmers.forEach(swimmer => {
+            swimmerCutTable(swimmer, this.dates);
+        })        
+    }
 
 }
 
@@ -62,13 +69,12 @@ function swimmerCutTable(swimmer, dates) {
     if (lcAge <= 10) {
         compGroupLC = '10&U';        
     } else if (lcAge === 11 || lcAge === 12) {
-        compGroupLC = '11&12';
+        compGroupLC = '11-12';
     } else if (lcAge === 13 || lcAge === 14) {
-        compGroupLC = '13&14';
+        compGroupLC = '13-14';
     } else {
         compGroupLC = '15&O';
     }
-
 
     //Create content for elements
     swimmerName.textContent = `Name: ${swimmer.fname} ${swimmer.lname}`;
@@ -79,6 +85,95 @@ function swimmerCutTable(swimmer, dates) {
     swimmerCompGroupLC.textContent = `Competition Category: ${compGroupLC}`;
 
     //Create tables
+        
+    //Table Head (same for short course and long course):
+    const thead = document.createElement('thead');
+    const headerRow = document.createElement('tr');    
+    //Header Row:
+    const thEvent = document.createElement('th');
+    thEvent.textContent = 'Event';
+    const thSwimmerTime = document.createElement('th');
+    thSwimmerTime.textContent = "Swimmer's Time";
+    const thStateCutTime = document.createElement('th');
+    thStateCutTime.textContent = 'State Qualifying Time';
+    const thTimeToCut = document.createElement('th');
+    thTimeToCut.textContent = "Swimmer's Time to Cut";    
+    //Append to Header Row:
+    headerRow.appendChild(thEvent);
+    headerRow.appendChild(thSwimmerTime);
+    headerRow.appendChild(thStateCutTime);
+    headerRow.appendChild(thTimeToCut);
+    //Append header row to table head:     
+    thead.appendChild(headerRow);
+    //Clone the thead so it can be in two places:
+    const scthead = thead.cloneNode(true);
+    const lcthead = thead.cloneNode(true);
+    //Append table heads to tables:
+    scTable.appendChild(scthead);
+    lcTable.appendChild(lcthead);
+
+    //Pull data from JSON file and put in arrays
+    let swimmerGender;
+    if (swimmer.gender === "F") {
+        swimmerGender = 'Girls';
+    } else {
+        swimmerGender = 'Boys';
+    }    
+    const scTimes = Object.keys(stateCuts["Short Course"][swimmerGender][compGroupSC]);
+    const lcTimes = Object.keys(stateCuts["Long Course"][swimmerGender][compGroupLC]);
+
+    //Test
+
+    //SC TABLE
+    //Table Body:
+    const sctbody = document.createElement('tbody');
+    //Loop through events to create rows
+    scTimes.forEach(event => {
+        //Create row to hold data
+        const row = document.createElement('tr');
+        row.classList.add('table-row');
+
+        //Fill row with data
+        const tdEvent = document.createElement('td');
+        tdEvent.textContent = event;
+
+        const tdSwimmerTime = document.createElement('td');
+        tdSwimmerTime.textContent = swimmer[event] || 'n/a';
+
+        const tdStateCut = document.createElement('td');
+        tdStateCut.textContent = stateCuts["Short Course"][swimmerGender][compGroupSC][event];
+
+        const tdTimeToCut = document.createElement('td');
+        //Calculate difference in swimmer's time and state cut
+        const swimmerTime = turnStringToTime(swimmer[event]);
+        const stateCutTime = turnStringToTime(stateCuts["Short Course"][swimmerGender][compGroupSC][event]);
+        let formattedTimeToCut; //Set variable to hold string version of the calculation
+        if (!swimmerTime && !stateCutTime) { //if there is no time for either swimmer time or state cut time
+            row.classList.add('no-time');
+            formattedTimeToCut = 'n/a';
+        } else {            
+            const timeToCut = swimmerTime - stateCutTime;
+            if (timeToCut > 0) {
+                row.classList.add('not-qualified');
+            } else {
+                row.classList.add('qualified');
+            }
+            formattedTimeToCut = turnTimeToString(timeToCut);
+        };          
+        tdTimeToCut.textContent = formattedTimeToCut;
+
+        //Append data to row
+        row.appendChild(tdEvent);
+        row.appendChild(tdSwimmerTime);
+        row.appendChild(tdStateCut);
+        row.appendChild(tdTimeToCut);
+
+        //Append row to tbody
+        sctbody.appendChild(row);
+    });
+
+    //Append body to table
+    scTable.appendChild(sctbody);
 
 
     //Append content to div
@@ -94,4 +189,33 @@ function swimmerCutTable(swimmer, dates) {
     //Append div to state-cuts.html
     const stateCutsDiv = document.querySelector('#swimmer-cut-times');
     stateCutsDiv.appendChild(swimmerDiv);
+}
+
+//Function to convert times recorded as strings as a time in seconds
+function turnStringToTime(string) {
+    let time;
+    if (string === 'n/a') { //if there is no time, return null value
+        time = null;        
+    } else {
+        const parts = string.split(':'); //splits minutes and seconds apart
+        time = parseInt(parts[0]) * 60 + parseFloat(parts[1]);
+    }
+    return time;
+}
+
+//Function to convert time in seconds to a string in MM:SS.xx format
+function turnTimeToString(timeInSeconds) {
+    const minutes = String(Math.floor(timeInSeconds / 60));
+    const seconds = (timeInSeconds % 60).toFixed(2); //ensures only 2 decimal places, toFixed converts it to a string
+
+    //Add leading zero on minutes if it's less than 10
+    const paddedMinutes = minutes.padStart(2, '0');
+
+    //Add leading zero on seconds if it's less than 10
+    const secondsParts = seconds.split('.'); //Split into parts before and after the decimal point.
+    const wholeSeconds = secondsParts[0];
+    const paddedSeconds = `${wholeSeconds.padStart(2, '0')}.${secondsParts[1]}`; //padStart is a build in JS function that adds a value in front
+
+    const formattedTime = `${paddedMinutes}:${paddedSeconds}`;
+    return formattedTime;
 }

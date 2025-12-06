@@ -24,6 +24,7 @@ export default class SwimmerProfiles {
         document.getElementById('fname').value = swimmer.fname || "";
         document.getElementById("lname").value = swimmer.lname || "";
         document.getElementById("birthdate").value = swimmer.birthdate || "";
+        document.getElementById("gender").value = swimmer.gender || "";
         //Short Course (SCY):
         document.getElementById("50FRSCY").value = swimmer["50FRSCY"] || "";
         document.getElementById("100FRSCY").value = swimmer["100FRSCY"] || "";
@@ -157,6 +158,7 @@ function swimmerProfileTemplate(swimmer) {
         <h3>Name: ${swimmer.fname} ${swimmer.lname}</h3>
         <h3>Age: ${age}</h3>
         <h3>Birthdate: ${swimmer.birthdate}</h3>
+        <h3>Gender: ${swimmer.gender}</h3>
         <h3>Short Course Times: </h3>
         <ul id="short-course-times">
             <li class="times">50 FR SCY: ${swimmer['50FRSCY'] || ''}</li>

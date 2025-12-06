@@ -2,19 +2,22 @@ import { loadHeaderFooter } from "./functions.mjs";
 import { observeUserLoginChanges, logoutUser } from "./auth.js";
 import MockAPIData from "./mockAPI.mjs";
 import StateCutDates from "./state-cut-dates.mjs";
+import StateCutTables from "./state-cut-tables.mjs";
 
 //Call function to load headers and footers
 loadHeaderFooter();
 
 
-//STATE-DATES SECTION
 //Create a new instance of MockAPIData
-//API ENDPOINT FROM MOCKAPI:
+//API ENDPOINTS FROM MOCKAPI:
 const stateDatesAPIendpoint = `https://692f280e91e00bafccd6c5d3.mockapi.io/swim-cut-check/state-dates`;
-
-//State Meets Dates
+const swimmersAPIendpoint = `https://692f280e91e00bafccd6c5d3.mockapi.io/swim-cut-check/swimmers`;
+//State Meets Dates and Swimmers Data
 const savedStateDates = new MockAPIData(stateDatesAPIendpoint);
+const swimmersData = new MockAPIData(swimmersAPIendpoint);
 
+
+//STATE-DATES SECTION
 //Create a new instance of StateCutDates
 const stateCutDates = new StateCutDates(savedStateDates);
 
@@ -45,3 +48,7 @@ document.querySelector('#update-dates-button').addEventListener("click", async (
 
 
 //STATE TIMESCOMPARISON SECTION
+//Create a new instance of StateCutTables
+const stateCutTable = new StateCutTables(swimmersData, savedStateDates);
+
+stateCutTable.init();
