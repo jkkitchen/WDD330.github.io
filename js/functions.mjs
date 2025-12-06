@@ -19,12 +19,12 @@ export function renderWithTemplate(template, parentElement, callback) {
 //Function to load headers and footers
 export async function loadHeaderFooter() {
     //Load and publish header
-    const headerTemplate = await loadTemplate("partials/header.html"); //Use an absolute file path rather than relative so it will load regardless of where the webpage is in the folders
+    const headerTemplate = await loadTemplate("/partials/header.html"); //Use an absolute file path rather than relative so it will load regardless of where the webpage is in the folders
     const headerElement = document.querySelector(".header"); //use class rather than id so it can be applied to all webpages
     renderWithTemplate(headerTemplate, headerElement);
 
     //Load and publish footer
-    const footerTemplate = await loadTemplate("partials/footer.html"); //Use an absolute file path rather than relative so it will load regardless of where the webpage is in the folders
+    const footerTemplate = await loadTemplate("/partials/footer.html"); //Use an absolute file path rather than relative so it will load regardless of where the webpage is in the folders
     const footerElement = document.querySelector(".footer"); //use class rather than id so it can be applied to all webpages
     renderWithTemplate(footerTemplate, footerElement); //no callback function in the footer
 }
