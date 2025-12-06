@@ -6,7 +6,7 @@ import {
     signInWithEmailAndPassword,
     signOut,
     onAuthStateChanged
-} from "./firebase/auth";
+} from "./firebase.js";
 
 //every auth function requires auth as a parameter so Firebase knows which project this is
 
