@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swim Cut Times Swimmer Profiles</title>
+    <meta name="author" content="Jessica Kitchen">
+    <meta name="description" content="Comparing Swimmer Times to State Qualifying Times on Swim Cut Check, the Final Project of WDD 330">
+    <!--Facebook Meta Tags-->
+    <meta property="og:title" content="Swim Cut Check Swimmer Profiles Page">
+    <meta property="og:description" content="A webpage showing which events swimmer's have qualified for state in, and how much time needs to be cut to qualify on other events.">
+    <meta property="og:image" content="https://jkkitchen.github.io/wdd330/project/images/swim-hero.webp">
+    <meta property="og:url" content="https://jkkitchen.github.io/wdd330/Final-Project/state-cuts.html">
+    <!--Link to Favicon-->
+    <link rel="icon" href="/images/clipboard-check.ico">
+    <!--Link to Google Fonts for Racing Sans One and Monserrat-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100..900&family=Racing+Sans+One&display=swap"
+        rel="stylesheet">
+    <!--Link to CSS Files-->
+    <link rel="stylesheet" href="styles/base.css">
+    <!--Link to JS Files-->
+    <script src="js/state-cuts.js" type="module"></script>
+</head>
+
+<body>
+    <header class="header" id="state-cuts-header"></header>
+    <section id="state-dates">
+        <h2>South Carolina State Meets Starting Dates</h2>
+        <div id="dates-and-update-button">
+            <div id="existing-state-dates"></div>
+            <button id="update-dates-button">Update Dates</button>
+        </div>
+        <div id="dates-form-container">
+            <form class="hide form-container" id="state-dates-form">
+                <label>Short Course: <input type="date" id="short-course-date" placeholder="MM/DD/YYYY" required></label>
+                <label>Long Course: <input type="date" id="long-course-date" placeholder="MM/DD/YYYY" required></label>            
+                <input type="submit" id="state-dates-submit" value="Submit Dates">
+            </form>
+        </div>
+    </section>
+    <section id="compare-state-times">
+        <h2>Swimmer State Cuts Comparisons</h2>
+        <div id="swimmer-cut-times"></div>
+    </section>
+
+
+    <footer class="footer" id="state-cuts-footer"></footer>
+</body>
+
+</html>
