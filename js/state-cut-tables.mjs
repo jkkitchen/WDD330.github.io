@@ -1,4 +1,4 @@
-import stateCuts from '../public/data/SCSwimmingTimes.json' assert { type: 'json' };
+import stateCuts from '../data/stateCuts.js';
 
 export default class StateCutTables {
     //CONSTRUCTOR
@@ -10,7 +10,7 @@ export default class StateCutTables {
     }
 
     //METHODS
-    async init() {
+    async init() {       
         //Call MockAPI functions to get data from MockAPI
         const swimmerResults = await this.swimmersData.getSwimmers();
         const datesResults = await this.datesData.getDates();
@@ -38,7 +38,7 @@ function swimmerCutTable(swimmer, dates) {
     swimmerDiv.classList.add('swimmer-div');
 
     //Create elements to go in the div
-    const swimmerName = document.createElement('h2');
+    const swimmerName = document.createElement('h3');
     const swimmerBirthdate = document.createElement('p');
     const swimmerAgeSC = document.createElement('p');
     const swimmerCompGroupSC = document.createElement('p'); 
@@ -50,17 +50,20 @@ function swimmerCutTable(swimmer, dates) {
     lcTable.classList.add('lc-state-table');
 
     //Calculate ages at time of state meet:
-    const scAge = Math.floor((new Date(dates.shortCourse) - new Date(swimmer.birthdate)) / (1000 * 60 * 60 * 24 * 365));
-    const lcAge = Math.floor((new Date(dates.longCourse) - new Date(swimmer.birthdate)) / (1000 * 60 * 60 * 24 * 365))
-    
+    const { shortCourse, longCourse } = dates[0];
+    const scAge = Math.floor((new Date(shortCourse) - new Date(swimmer.birthdate)) / (1000 * 60 * 60 * 24 * 365));
+    const lcAge = Math.floor((new Date(longCourse) - new Date(swimmer.birthdate)) / (1000 * 60 * 60 * 24 * 365))
+
+    console.log(lcAge);
+
     //Figure out competition group for state meets based on age.
     let compGroupSC;
     if (scAge <= 10) {
         compGroupSC = '10&U';
     } else if (scAge === 11 || scAge === 12) {
-        compGroupSC = '11&12';
+        compGroupSC = '11-12';
     } else if (scAge === 13 || scAge === 14) {
-        compGroupSC = '13&14';
+        compGroupSC = '13-14';
     } else {
         compGroupSC = '15&O';
     }
@@ -74,7 +77,7 @@ function swimmerCutTable(swimmer, dates) {
         compGroupLC = '13-14';
     } else {
         compGroupLC = '15&O';
-    }
+    }    
 
     //Create content for elements
     swimmerName.textContent = `Name: ${swimmer.fname} ${swimmer.lname}`;
@@ -84,8 +87,7 @@ function swimmerCutTable(swimmer, dates) {
     swimmerAgeLC.textContent = `Age at Time of Long Course State Meet: ${lcAge}`;
     swimmerCompGroupLC.textContent = `Competition Category: ${compGroupLC}`;
 
-    //Create tables
-        
+    //Create tables        
     //Table Head (same for short course and long course):
     const thead = document.createElement('thead');
     const headerRow = document.createElement('tr');    
@@ -119,10 +121,9 @@ function swimmerCutTable(swimmer, dates) {
     } else {
         swimmerGender = 'Boys';
     }    
+
     const scTimes = Object.keys(stateCuts["Short Course"][swimmerGender][compGroupSC]);
     const lcTimes = Object.keys(stateCuts["Long Course"][swimmerGender][compGroupLC]);
-
-    //Test
 
     //SC TABLE
     //Table Body:
@@ -138,7 +139,7 @@ function swimmerCutTable(swimmer, dates) {
         tdEvent.textContent = event;
 
         const tdSwimmerTime = document.createElement('td');
-        tdSwimmerTime.textContent = swimmer[event] || 'n/a';
+        tdSwimmerTime.textContent = swimmer[event] || '';
 
         const tdStateCut = document.createElement('td');
         tdStateCut.textContent = stateCuts["Short Course"][swimmerGender][compGroupSC][event];
@@ -148,18 +149,17 @@ function swimmerCutTable(swimmer, dates) {
         const swimmerTime = turnStringToTime(swimmer[event]);
         const stateCutTime = turnStringToTime(stateCuts["Short Course"][swimmerGender][compGroupSC][event]);
         let formattedTimeToCut; //Set variable to hold string version of the calculation
-        if (!swimmerTime && !stateCutTime) { //if there is no time for either swimmer time or state cut time
+        if (!swimmerTime) { //if there is no time for either swimmer time or state cut time
             row.classList.add('no-time');
-            formattedTimeToCut = 'n/a';
-        } else {            
+            formattedTimeToCut = '';
+        } else if (swimmerTime > stateCutTime) {
             const timeToCut = swimmerTime - stateCutTime;
-            if (timeToCut > 0) {
-                row.classList.add('not-qualified');
-            } else {
-                row.classList.add('qualified');
-            }
+            row.classList.add('not-qualified');
             formattedTimeToCut = turnTimeToString(timeToCut);
-        };          
+        } else if (swimmerTime <= stateCutTime) {
+            row.classList.add('qualified');
+            formattedTimeToCut = 'Qualified';
+        };
         tdTimeToCut.textContent = formattedTimeToCut;
 
         //Append data to row
@@ -175,6 +175,56 @@ function swimmerCutTable(swimmer, dates) {
     //Append body to table
     scTable.appendChild(sctbody);
 
+
+    //LC TABLE
+    //Table Body:
+    const lctbody = document.createElement('tbody');
+    //Loop through events to create rows
+    lcTimes.forEach(event => {
+        //Create row to hold data
+        const row = document.createElement('tr');
+        row.classList.add('table-row');
+
+        //Fill row with data
+        const tdEvent = document.createElement('td');
+        tdEvent.textContent = event;
+
+        const tdSwimmerTime = document.createElement('td');
+        tdSwimmerTime.textContent = swimmer[event] || '';
+
+        const tdStateCut = document.createElement('td');
+        tdStateCut.textContent = stateCuts["Long Course"][swimmerGender][compGroupLC][event];
+
+        const tdTimeToCut = document.createElement('td');
+        //Calculate difference in swimmer's time and state cut
+        const swimmerTime = turnStringToTime(swimmer[event]);
+        const stateCutTime = turnStringToTime(stateCuts["Long Course"][swimmerGender][compGroupLC][event]);
+        let formattedTimeToCut; //Set variable to hold string version of the calculation
+        if (!swimmerTime) { //if there is no time for either swimmer time or state cut time
+            row.classList.add('no-time');
+            formattedTimeToCut = '';
+        } else if (swimmerTime > stateCutTime) {
+            const timeToCut = swimmerTime - stateCutTime;
+            row.classList.add('not-qualified');
+            formattedTimeToCut = turnTimeToString(timeToCut);
+        } else if (swimmerTime <= stateCutTime) {
+            row.classList.add('qualified');
+            formattedTimeToCut = 'Qualified';
+        };
+        tdTimeToCut.textContent = formattedTimeToCut;
+
+        //Append data to row
+        row.appendChild(tdEvent);
+        row.appendChild(tdSwimmerTime);
+        row.appendChild(tdStateCut);
+        row.appendChild(tdTimeToCut);
+
+        //Append row to tbody
+        lctbody.appendChild(row);
+    });
+    
+    //Append body to table
+    lcTable.appendChild(lctbody);
 
     //Append content to div
     swimmerDiv.appendChild(swimmerName);
@@ -194,7 +244,7 @@ function swimmerCutTable(swimmer, dates) {
 //Function to convert times recorded as strings as a time in seconds
 function turnStringToTime(string) {
     let time;
-    if (string === 'n/a') { //if there is no time, return null value
+    if (string === 'n/a' || !string) { //if there is no time, return null value
         time = null;        
     } else {
         const parts = string.split(':'); //splits minutes and seconds apart

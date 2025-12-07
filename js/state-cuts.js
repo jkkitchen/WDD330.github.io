@@ -1,5 +1,5 @@
 import { loadHeaderFooter } from "./functions.mjs";
-import { observeUserLoginChanges } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
+import { observeUserLoginChanges, logoutUser } from "./auth.js";
 import MockAPIData from "./mockAPI.mjs";
 import StateCutDates from "./state-cut-dates.mjs";
 import StateCutTables from "./state-cut-tables.mjs";
@@ -51,4 +51,9 @@ document.querySelector('#update-dates-button').addEventListener("click", async (
 //Create a new instance of StateCutTables
 const stateCutTable = new StateCutTables(swimmersData, savedStateDates);
 
-stateCutTable.init();
+//Wait for login state to load before loading swimmers and dates
+observeUserLoginChanges(user => {
+    if (user) {
+        stateCutTable.init();
+    }
+});
