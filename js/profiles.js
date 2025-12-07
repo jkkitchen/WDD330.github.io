@@ -32,7 +32,7 @@ observeUserLoginChanges((user) => { //user is a value given by firebase, the use
     newSwimmerProfiles.init();
 });
 
-//Add event listener for logout button
+//Add event listener for logout
 logoutButton.addEventListener("click", async () => { //async because of firebase
     await logoutUser();
 });

@@ -1,5 +1,5 @@
 import { loadHeaderFooter } from "./functions.mjs";
-import { observeUserLoginChanges, logoutUser } from "./auth.js";
+import { observeUserLoginChanges } from "./auth.js";
 import MockAPIData from "./mockAPI.mjs";
 import StateCutDates from "./state-cut-dates.mjs";
 import StateCutTables from "./state-cut-tables.mjs";

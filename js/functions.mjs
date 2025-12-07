@@ -1,4 +1,4 @@
-//Functions to be used on multiple web pages
+import { logoutUser } from "./auth.js";
 
 //Function to call templates
 export async function loadTemplate(path) {
@@ -21,7 +21,15 @@ export async function loadHeaderFooter() {
     //Load and publish header
     const headerTemplate = await loadTemplate("./partials/header.html"); //Use an absolute file path rather than relative so it will load regardless of where the webpage is in the folders
     const headerElement = document.querySelector(".header"); //use class rather than id so it can be applied to all webpages
-    renderWithTemplate(headerTemplate, headerElement);
+    renderWithTemplate(headerTemplate, headerElement, () => {
+
+
+        const logoutLink = document.querySelector('.logout-link');
+        logoutLink.addEventListener("click", async (e) => { //async because of firebase
+            e.preventDefault();
+            await logoutUser();
+        });
+    });
 
     //Load and publish footer
     const footerTemplate = await loadTemplate("./partials/footer.html"); //Use an absolute file path rather than relative so it will load regardless of where the webpage is in the folders
