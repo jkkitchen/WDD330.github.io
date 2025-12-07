@@ -54,8 +54,6 @@ function swimmerCutTable(swimmer, dates) {
     const scAge = Math.floor((new Date(shortCourse) - new Date(swimmer.birthdate)) / (1000 * 60 * 60 * 24 * 365));
     const lcAge = Math.floor((new Date(longCourse) - new Date(swimmer.birthdate)) / (1000 * 60 * 60 * 24 * 365))
 
-    console.log(lcAge);
-
     //Figure out competition group for state meets based on age.
     let compGroupSC;
     if (scAge <= 10) {
