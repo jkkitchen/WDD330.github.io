@@ -222,3 +222,10 @@ button {
     background-color: var(--light-blue);
 }
 
+.no-time {
+    background-color: rgb(243, 241, 241);
+}
+
+.qualified {
+    background-color: rgb(220, 243, 220);
+}
