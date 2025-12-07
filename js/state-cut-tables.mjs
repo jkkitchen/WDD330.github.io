@@ -1,4 +1,4 @@
-import stateCuts from '../data/stateCuts.js';
+import StateCuts from '../data/StateCuts.js';
 
 export default class StateCutTables {
     //CONSTRUCTOR
@@ -120,8 +120,8 @@ function swimmerCutTable(swimmer, dates) {
         swimmerGender = 'Boys';
     }    
 
-    const scTimes = Object.keys(stateCuts["Short Course"][swimmerGender][compGroupSC]);
-    const lcTimes = Object.keys(stateCuts["Long Course"][swimmerGender][compGroupLC]);
+    const scTimes = Object.keys(StateCuts["Short Course"][swimmerGender][compGroupSC]);
+    const lcTimes = Object.keys(StateCuts["Long Course"][swimmerGender][compGroupLC]);
 
     //SC TABLE
     //Table Body:
@@ -140,12 +140,12 @@ function swimmerCutTable(swimmer, dates) {
         tdSwimmerTime.textContent = swimmer[event] || '';
 
         const tdStateCut = document.createElement('td');
-        tdStateCut.textContent = stateCuts["Short Course"][swimmerGender][compGroupSC][event];
+        tdStateCut.textContent = StateCuts["Short Course"][swimmerGender][compGroupSC][event];
 
         const tdTimeToCut = document.createElement('td');
         //Calculate difference in swimmer's time and state cut
         const swimmerTime = turnStringToTime(swimmer[event]);
-        const stateCutTime = turnStringToTime(stateCuts["Short Course"][swimmerGender][compGroupSC][event]);
+        const stateCutTime = turnStringToTime(StateCuts["Short Course"][swimmerGender][compGroupSC][event]);
         let formattedTimeToCut; //Set variable to hold string version of the calculation
         if (!swimmerTime) { //if there is no time for either swimmer time or state cut time
             row.classList.add('no-time');
@@ -191,12 +191,12 @@ function swimmerCutTable(swimmer, dates) {
         tdSwimmerTime.textContent = swimmer[event] || '';
 
         const tdStateCut = document.createElement('td');
-        tdStateCut.textContent = stateCuts["Long Course"][swimmerGender][compGroupLC][event];
+        tdStateCut.textContent = StateCuts["Long Course"][swimmerGender][compGroupLC][event];
 
         const tdTimeToCut = document.createElement('td');
         //Calculate difference in swimmer's time and state cut
         const swimmerTime = turnStringToTime(swimmer[event]);
-        const stateCutTime = turnStringToTime(stateCuts["Long Course"][swimmerGender][compGroupLC][event]);
+        const stateCutTime = turnStringToTime(StateCuts["Long Course"][swimmerGender][compGroupLC][event]);
         let formattedTimeToCut; //Set variable to hold string version of the calculation
         if (!swimmerTime) { //if there is no time for either swimmer time or state cut time
             row.classList.add('no-time');
