@@ -17,7 +17,6 @@ const swimmerData = new MockAPIData(swimmersAPIendpoint);
 const newSwimmerProfiles = new SwimmerProfiles(swimmerData);
 
 //Account Section:
-const logoutButton = document.querySelector('#logout-button');
 const emailDisplay = document.querySelector('#user-email');
 
 //If user logs out or is not logged in, redirect to login page
@@ -30,11 +29,6 @@ observeUserLoginChanges((user) => { //user is a value given by firebase, the use
 
     //Load swimmers now that we know the user
     newSwimmerProfiles.init();
-});
-
-//Add event listener for logout
-logoutButton.addEventListener("click", async () => { //async because of firebase
-    await logoutUser();
 });
 
 
@@ -82,5 +76,12 @@ document.getElementById('add-swimmer').addEventListener('click', () => {
 document.getElementById('new-swimmer-submit').addEventListener('click', async (event) => { //make async to make sure the swimmer is added to MockAPI before form resets
     event.preventDefault();
     const form = document.querySelector('.new-swimmer-form');
-    await newSwimmerProfiles.saveSwimmerProfile(form);
+    const savedSwimmer = await newSwimmerProfiles.saveSwimmerProfile(form); //saves info to MockAPI
+
+    //Call function to save event time information to LocalStorage to be called on swimmer-history.html
+    newSwimmerProfiles.recordTimesToLocalStorage(savedSwimmer.id);
+
+    //Reset and hide form    
+    form.reset();
+    form.classList.add('hide'); //Hides the form again since toggling removed the 'hide' class
 });

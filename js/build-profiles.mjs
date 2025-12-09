@@ -1,3 +1,5 @@
+import { setLocalStorage } from "./functions.mjs";
+
 export default class SwimmerProfiles {
     //CONSTRUCTOR
     constructor(dataSource) {
@@ -73,10 +75,11 @@ export default class SwimmerProfiles {
         const swimmerProfile = Object.fromEntries(formData.entries());
 
         //Use if statement to determine if there is an editingSwimmerId, to determine if this is an update or new swimmer
+        let savedSwimmer;
         if (this.editingSwimmerId) {
             //Update existing swimmer information
             swimmerProfile.id = this.editingSwimmerId;
-            await this.dataSource.updateSwimmer(this.editingSwimmerId, swimmerProfile);            
+            savedSwimmer = await this.dataSource.updateSwimmer(this.editingSwimmerId, swimmerProfile);            
 
             //Reload page to display updated profiles
             await this.init();
@@ -89,16 +92,15 @@ export default class SwimmerProfiles {
             swimmerProfile.id = Date.now().toString() + Math.floor(Math.random() * 1000);
 
             //Call the dataSource to save to MockAPI
-            const newSwimmer = await this.dataSource.addSwimmer(swimmerProfile);
-            this.swimmers.push(newSwimmer);
+            savedSwimmer = await this.dataSource.addSwimmer(swimmerProfile);
+            this.swimmers.push(savedSwimmer);
 
             //Display the new profile
-            this.renderSwimmerProfile(newSwimmer);
+            this.renderSwimmerProfile(savedSwimmer);
         }        
 
-        //Reset and hide form
-        form.reset();
-        form.classList.add('hide'); //Hides the form again since toggling removed the 'hide' class
+        //Return savedSwimmer to be used in localStorage function
+        return savedSwimmer;
     }
 
     //Render one swimmer profile
@@ -119,6 +121,40 @@ export default class SwimmerProfiles {
         container.innerHTML = "";
         //Run a for loop to create a profile for each swimmer
         this.swimmers.forEach(swimmer => this.renderSwimmerProfile(swimmer));
+    }
+
+    //Function that will track changes in swimmer's events to be displayed on swimmer-history.html
+    recordTimesToLocalStorage(swimmerId) {
+        //Retrieve swimmer event history if swimmerId exists or create an empty array if it does not
+        const historyKey = `swimmer_${swimmerId}_history`;
+        const historyArray = JSON.parse(localStorage.getItem(historyKey)) || [];
+
+        //Get form data
+        const form = document.querySelector('.new-swimmer-form');
+        const formData = new FormData(form);
+        const formEntries = Object.fromEntries(formData.entries());
+
+        //Filter so only event times are saved to this variable by determining if the entry contains 'SCY' or 'LCM'
+        const eventTimesOnly = {};        
+        Object.keys(formEntries).forEach(key => {
+            if (key.match(/(SCY|LCM)$/)) {
+                eventTimesOnly[key] = formEntries[key];
+            }            
+        });
+
+        //Include the date the entry was added
+        const eventEntry = {
+            timestamp: new Date().toISOString(),
+            swimmerId: swimmerId,
+            swimmerName: `${formEntries.fname} ${formEntries.lname}`,
+            eventTimes: eventTimesOnly
+        };
+
+        //Append new entry to history
+        historyArray.push(eventEntry);
+
+        //Save back to localStorage
+        setLocalStorage(historyKey, historyArray);
     }
 }
 

@@ -1,8 +1,19 @@
 import { loadHeaderFooter } from "./functions.mjs";
-import { userLogin } from "./auth.js";
+import { userLogin, observeUserLoginChanges } from "./auth.js";
 
 //Call function to load headers and footers
 loadHeaderFooter();
+
+//Determine if user is logged in, if not logged in do not show nav menu
+observeUserLoginChanges((user) => { //user is a value given by firebase, the user if they are logged in, null if they are not; it is the parameter of the callback function
+    const nav = document.querySelector('.nav');
+    if (!user) {        
+        nav.classList.add('hide');
+    } else {
+        nav.classList.remove('hide');
+    }
+});
+
 
 //LOGIN SECTION:
 //Get elements from index.html
