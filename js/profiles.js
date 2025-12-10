@@ -43,6 +43,9 @@ document.getElementById('template-swimmer').addEventListener("click", async (e) 
             //Remove the deleted swimmer
             newSwimmerProfiles.swimmers = newSwimmerProfiles.swimmers.filter(s => s.id !== swimmerId);
 
+            //Remove the deleted swimmer from localStorage for swimmer-history.html
+            localStorage.removeItem(`swimmer_${swimmerId}_history`);
+
             //Render the profiles without the deleted one
             newSwimmerProfiles.renderAllSwimmerProfiles();
         } catch (err) {

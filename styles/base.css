@@ -198,7 +198,7 @@ button {
     margin-top: 0;
 }
 
-.sc-state-table, .lc-state-table {
+.sc-state-table, .lc-state-table, .history-table {
     width: 80%;
     border-collapse: collapse;
     table-layout: fixed;
@@ -208,6 +208,7 @@ button {
 
 .sc-state-table th,
 .lc-state-table th,
+.history-table th,
 .sc-state-table td,
 .lc-state-table td {
     border: 1px solid black;
@@ -229,4 +230,37 @@ button {
 
 .qualified {
     background-color: rgb(220, 243, 220);
+}
+
+/* swimmer-history.html */
+.history-table td {
+    border-left: 1px solid black;
+    border-right: 1px solid black; 
+    
+    padding: 8px;
+    text-align: center;
+}
+
+.history-table td.has-top-border {
+    border-top: 1px solid black;
+}
+
+.history-table {
+    border-bottom: 1px solid black;
+}
+
+#history-tables h3 {
+    font-family: var(--text-font);
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+.swimmer-history-div {
+    display: flex;
+    flex-direction: column;    
+    align-items: center;
+}
+
+.history-table th {
+    background-color: var(--light-blue);
 }
