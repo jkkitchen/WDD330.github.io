@@ -90,9 +90,10 @@ function buildHistoryTable(swimmerHistoryArray) {
         timesArray.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
         //Create new array that does not have any empty times
         const filteredTimesArray = timesArray.filter(t => t.time && t.time.trim() !== '');
-        
+        //Remove duplicate times
+        const uniqueTimesArray = removeDuplicates(filteredTimesArray);        
         //Fill row with data from filteredTimesArray (event, time, timestamp)
-        filteredTimesArray.forEach((t, index) => {
+        uniqueTimesArray.forEach((t, index) => {
             //Create row
             const row = document.createElement('tr');
             row.classList.add('table-row');
@@ -132,4 +133,18 @@ function buildHistoryTable(swimmerHistoryArray) {
     swimmerHistoryDiv.appendChild(historyTable);
     //Append swimmer div to container in html
     container.appendChild(swimmerHistoryDiv);
+}
+
+//Function to remove duplicate times from the swimmer history table
+function removeDuplicates(array) {    
+    const existingValue = new Set(); //A Set stores unique values 
+    const removedDuplicatesArray =  array.filter(t => { 
+        if (existingValue.has(t.time)) { //If the set already includes time, returns false which means the value is not added to the set
+            return false;
+        } else {
+            existingValue.add(t.time); //adds to the set
+            return true; //returns true for the filter so it's kept in the returned array
+        }
+    });    
+    return removedDuplicatesArray;
 }

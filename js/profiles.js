@@ -1,10 +1,14 @@
 import { loadHeaderFooter } from "./functions.mjs";
-import { observeUserLoginChanges, logoutUser } from "./auth.js";
+import { observeUserLoginChanges } from "./auth.js";
+import { lastVisitMessage } from "./last-visit.mjs";
 import SwimmerProfiles from "./build-profiles.mjs";
 import MockAPIData from "./mockAPI.mjs";
 
 //Call function to load headers and footers
 loadHeaderFooter();
+
+//Create an event listener so the last visit message will display when the page loads
+document.addEventListener("DOMContentLoaded", lastVisitMessage);
 
 //Create a new instance of MockAPIData
 //API ENDPOINT FROM MOCKAPI:

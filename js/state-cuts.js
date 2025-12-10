@@ -44,6 +44,7 @@ document.querySelector('#state-dates-submit').addEventListener("click", async (e
 //Create an event listener for update dates button
 document.querySelector('#update-dates-button').addEventListener("click", async (e) => {
     document.querySelector('#state-dates-form').classList.remove('hide');
+    stateCutDates.populateDatesForm();
 })
 
 

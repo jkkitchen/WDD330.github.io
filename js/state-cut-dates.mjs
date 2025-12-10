@@ -1,3 +1,5 @@
+import { getLocalStorage, setLocalStorage } from "./functions.mjs";
+
 export default class StateCutDates {
     //CONSTRUCTOR
     constructor(dataSource) {
@@ -37,6 +39,10 @@ export default class StateCutDates {
         //Create object containing the values
         const datesObject = { shortCourse, longCourse };
 
+        //Save values to localStorage
+        setLocalStorage('shortCourseDate', shortCourse);
+        setLocalStorage('longCourseDate', longCourse);
+
         //Update MockAPI
         let savedDates;
         if (this.dates) {
@@ -50,6 +56,26 @@ export default class StateCutDates {
         //Update local value
         this.dates = savedDates; //Now contains id assigned by MockAPI as well
     }
+
+    //Function to pull localStorage values to populate the form when it shows
+    async populateDatesForm() {
+        //Get input elements from html
+        const form = document.querySelector('#state-dates-form');
+        const shortCourse = form.querySelector('#short-course-date');
+        const longCourse = form.querySelector('#long-course-date');
+
+        //Call saved values from localStorage
+        const savedSCDate = getLocalStorage('shortCourseDate');
+        const savedLCDate = getLocalStorage('longCourseDate');
+
+        //Check to see if there are any values in localStorage, if not, return (default value of today's date will load)
+        if (!savedSCDate && !savedLCDate) return;
+
+        //If values exist, populate form with saved values
+        if (savedSCDate) shortCourse.value = savedSCDate;
+        if (savedLCDate) longCourse.value = savedLCDate;
+    }
+
 }
 
 //GLOBAL FUNCTIONS
@@ -63,8 +89,10 @@ function displayDates(dates) {
     //Create new values to be added to div
     const scDate = document.createElement('p');
     scDate.classList.add('date-p');
+    scDate.classList.add('sc-date');
     const lcDate = document.createElement('p');
     lcDate.classList.add('date-p');
+    lcDate.classList.add('lc-date');
 
     //Display content
     scDate.textContent = `Short Course: ${dates.shortCourse}`;

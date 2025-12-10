@@ -19,6 +19,10 @@ export default class StateCutTables {
         this.swimmers = swimmerResults;
         this.dates = datesResults;
 
+        //Import USA Motivational Times from JSON file
+        const USASwimmingResponse = await fetch('./USASwimmingTimes.json');
+        this.USASwimmingData = await USASwimmingResponse.json();
+
         //Call function to render swimmer info and table with times
         this.renderSwimmerTable();
     }
@@ -32,7 +36,7 @@ export default class StateCutTables {
 }
 
 //GLOBAL FUNCTIONS
-function swimmerCutTable(swimmer, dates) {
+function swimmerCutTable(swimmer, dates, USATimes) {
     //Create div to hold info on swimmer and the table
     const swimmerDiv = document.createElement('div');
     swimmerDiv.classList.add('swimmer-div');
@@ -112,7 +116,7 @@ function swimmerCutTable(swimmer, dates) {
     scTable.appendChild(scthead);
     lcTable.appendChild(lcthead);
 
-    //Pull data from JSON file and put in arrays
+    //Pull data from StateCuts.js file and put in arrays
     let swimmerGender;
     if (swimmer.gender === "F") {
         swimmerGender = 'Girls';
@@ -266,4 +270,11 @@ function turnTimeToString(timeInSeconds) {
 
     const formattedTime = `${paddedMinutes}:${paddedSeconds}`;
     return formattedTime;
+}
+
+//Function to call USA Swimming JSON file
+async function loadUSASwimmingTimes() {
+    const response = await fetch('./USASwimmingTimes.json');
+    const data = await response.json();
+    return data;
 }
