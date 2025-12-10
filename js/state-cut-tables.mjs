@@ -20,7 +20,7 @@ export default class StateCutTables {
         this.dates = datesResults;
 
         //Import USA Motivational Times from JSON file
-        const USASwimmingResponse = await fetch('./USASwimmingTimes.json');
+        const USASwimmingResponse = await fetch('./data/USASwimmingTimes.json');
         this.USASwimmingData = await USASwimmingResponse.json();
 
         //Call function to render swimmer info and table with times
@@ -29,7 +29,7 @@ export default class StateCutTables {
 
     async renderSwimmerTable() {
         this.swimmers.forEach(swimmer => {
-            swimmerCutTable(swimmer, this.dates);
+            swimmerCutTable(swimmer, this.dates, this.USASwimmingData);
         })        
     }
 
@@ -101,12 +101,15 @@ function swimmerCutTable(swimmer, dates, USATimes) {
     const thStateCutTime = document.createElement('th');
     thStateCutTime.textContent = 'State Qualifying Time';
     const thTimeToCut = document.createElement('th');
-    thTimeToCut.textContent = "Swimmer's Time to Cut";    
+    thTimeToCut.textContent = "Swimmer's Time to Cut";
+    const thUSASwimming = document.createElement('th');
+    thUSASwimming.textContent = 'USA Swimming Category';
     //Append to Header Row:
     headerRow.appendChild(thEvent);
     headerRow.appendChild(thSwimmerTime);
     headerRow.appendChild(thStateCutTime);
     headerRow.appendChild(thTimeToCut);
+    headerRow.appendChild(thUSASwimming);
     //Append header row to table head:     
     thead.appendChild(headerRow);
     //Clone the thead so it can be in two places:
@@ -164,11 +167,17 @@ function swimmerCutTable(swimmer, dates, USATimes) {
         };
         tdTimeToCut.textContent = formattedTimeToCut;
 
+        //USA Swimming Category
+        const tdUSALevel = document.createElement('td');
+        tdUSALevel.textContent = determineUSASwimmingLevel(swimmerTime, USATimes, "Short Course", swimmerGender, compGroupSC, event);
+
+
         //Append data to row
         row.appendChild(tdEvent);
         row.appendChild(tdSwimmerTime);
         row.appendChild(tdStateCut);
         row.appendChild(tdTimeToCut);
+        row.appendChild(tdUSALevel);
 
         //Append row to tbody
         sctbody.appendChild(row);
@@ -215,11 +224,16 @@ function swimmerCutTable(swimmer, dates, USATimes) {
         };
         tdTimeToCut.textContent = formattedTimeToCut;
 
+        //USA Swimming Category
+        const tdUSALevel = document.createElement('td');
+        tdUSALevel.textContent = determineUSASwimmingLevel(swimmerTime, USATimes, "Long Course", swimmerGender, compGroupLC, event);
+
         //Append data to row
         row.appendChild(tdEvent);
         row.appendChild(tdSwimmerTime);
         row.appendChild(tdStateCut);
         row.appendChild(tdTimeToCut);
+        row.appendChild(tdUSALevel);
 
         //Append row to tbody
         lctbody.appendChild(row);
@@ -272,9 +286,27 @@ function turnTimeToString(timeInSeconds) {
     return formattedTime;
 }
 
-//Function to call USA Swimming JSON file
-async function loadUSASwimmingTimes() {
-    const response = await fetch('./USASwimmingTimes.json');
-    const data = await response.json();
-    return data;
+//Function to determine if swimmer has USA Swimming Motivational Time
+function determineUSASwimmingLevel(swimmerTime, USATimesData, course, gender, age, event) {
+    if (!swimmerTime) return;
+
+    //Create an array of the possible levels in USA Motivational Times
+    const levels = ['B', 'BB', 'A', 'AA', 'AAA', 'AAAA']; //in order from slowest to fastest so it will loop in that order and end on fastest
+
+    //Determine the swimmer's current level
+    let currentLevel = '--'; //value for if they have not achieved a USA Motivational Time
+    for (let level of levels) {    //Loop through levels
+        //Get motivational time from data
+        const USATimeString = USATimesData[course][gender][age][level][event];
+
+        if (!USATimeString) continue; //in case that event doesn't exist in that age group
+        //Convert string to time
+        const USATime = turnStringToTime(USATimeString);
+
+        //Determine if the swimmer's time is faster than or equal to that level
+        if (swimmerTime <= USATime) {
+            currentLevel = level;
+        }
+    }
+    return currentLevel;
 }

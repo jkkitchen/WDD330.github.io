@@ -117,6 +117,10 @@ input[type="submit"] {
     display: block;
 }
 
+input[type="submit"]:hover {
+    background-color: var(--medium-blue);
+}
+
 #login-submit, #registration-submit {
     display: flex;
     align-items: center;
@@ -213,6 +217,18 @@ button:hover {
     border-bottom: solid 4px var(--medium-blue);
 }
 
+#usa-motivational-times-div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 30px;    
+    border-bottom: solid 1px var(--medium-blue);
+}
+
+#usa-motivational-times-div h3 {
+    font-family: var(--text-font);
+}
+
 .swimmer-div {
     font-family: var(--text-font);
     display: flex;
@@ -226,7 +242,17 @@ button:hover {
     margin-top: 0;
 }
 
-.sc-state-table, .lc-state-table, .history-table {
+#usa-explanation-table {
+    width: 400px;
+    border-collapse: collapse;
+    table-layout: fixed;
+    font-family: var(--text-font);
+    margin-bottom: 20px;
+}
+
+.sc-state-table, 
+.lc-state-table, 
+.history-table {
     width: 80%;
     border-collapse: collapse;
     table-layout: fixed;
@@ -237,15 +263,18 @@ button:hover {
 .sc-state-table th,
 .lc-state-table th,
 .history-table th,
+#usa-explanation-table th,
 .sc-state-table td,
-.lc-state-table td {
+.lc-state-table td,
+#usa-explanation-table td {
     border: 1px solid black;
     padding: 8px;
     text-align: center;
 }
 
 .sc-state-table th,
-.lc-state-table th {
+.lc-state-table th,
+#usa-explanation-table th {
     word-wrap: break-word;
     white-space: normal;
     width: 20%;
