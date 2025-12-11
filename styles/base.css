@@ -73,6 +73,10 @@ h2 {
 
 /*index.html, register.html, state-cuts.html */
 
+#registration-message, #login-message {
+    margin-bottom: 20px;    
+}
+
 #login-form, #registration, #dates-form-container {
     display: flex;
     flex-direction: column;
@@ -119,6 +123,20 @@ input[type="submit"] {
 
 input[type="submit"]:hover {
     background-color: var(--medium-blue);
+}
+
+input[type=email]:valid:not(:placeholder-shown),
+input[type=password]:valid:not(:placeholder-shown),
+input[type=text]:valid:not(:placeholder-shown),
+input[type=date]:valid:not(:placeholder-shown) {
+    border-right: 7px solid green;
+}
+
+input[type=email]:invalid:not(:placeholder-shown),
+input[type=password]:invalid:not(:placeholder-shown),
+input[type=text]:invalid:not(:placeholder-shown),
+input[type=date]:invalid:not(:placeholder-shown) {
+    border-right: 7px solid red;
 }
 
 #login-submit, #registration-submit {
@@ -205,6 +223,13 @@ button:hover {
         transform: translateY(0);
         opacity: 1;
     }
+}
+
+#swimmer-form-message {
+    margin-bottom: 20px;
+    font-family: var(--text-font);
+    text-align: center;
+    font-size: 1.2rem;
 }
 
 /* state-cuts.html */

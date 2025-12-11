@@ -17,14 +17,22 @@ const savedStateDates = new MockAPIData(stateDatesAPIendpoint);
 const swimmersData = new MockAPIData(swimmersAPIendpoint);
 
 
-//STATE-DATES SECTION
 //Create a new instance of StateCutDates
 const stateCutDates = new StateCutDates(savedStateDates);
 
+//Create a new instance of StateCutTables
+const stateCutTable = new StateCutTables(swimmersData, savedStateDates);
+
 //Wait for login state to load before loading dates
-observeUserLoginChanges(user => {
-    if (user) {
-        stateCutDates.init();
+observeUserLoginChanges(async user => {
+    if (user) {                
+        await stateCutDates.init();
+
+        //Check to see if there are dates saved on MockAPI, if there are run stateCutTable.init()
+        const results = await savedStateDates.getDates();        
+        if (results.length > 0) {
+            stateCutTable.init();            
+        } //if there are not dates on API, stateCutTable.init() is run in event listener for dates form
     }
 });
 
@@ -39,6 +47,9 @@ document.querySelector('#state-dates-submit').addEventListener("click", async (e
     //Clear Form
     const form = document.querySelector('#state-dates-form');
     form.reset();
+
+    //Create the state cut tables with new dates
+    stateCutTable.init();
 })
 
 //Create an event listener for update dates button
@@ -46,15 +57,3 @@ document.querySelector('#update-dates-button').addEventListener("click", async (
     document.querySelector('#state-dates-form').classList.remove('hide');
     stateCutDates.populateDatesForm();
 })
-
-
-//STATE TIMESCOMPARISON SECTION
-//Create a new instance of StateCutTables
-const stateCutTable = new StateCutTables(swimmersData, savedStateDates);
-
-//Wait for login state to load before loading swimmers and dates
-observeUserLoginChanges(user => {
-    if (user) {
-        stateCutTable.init();
-    }
-});

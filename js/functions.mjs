@@ -28,6 +28,9 @@ export async function loadHeaderFooter() {
         logoutLink.addEventListener("click", async (e) => { //async because of firebase
             e.preventDefault();
             await logoutUser();
+            //Delete currentUser from localStorage
+            localStorage.removeItem('currentUser');
+            window.location.href = "index.html";
         });
     });
 

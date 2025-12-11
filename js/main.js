@@ -1,4 +1,4 @@
-import { loadHeaderFooter } from "./functions.mjs";
+import { loadHeaderFooter, setLocalStorage } from "./functions.mjs";
 import { userLogin, observeUserLoginChanges } from "./auth.js";
 
 //Call function to load headers and footers
@@ -32,10 +32,15 @@ document.querySelector("#login-submit").addEventListener("click", async (event) 
     try {
         //enter email and password into function userLogin
         await userLogin(email, password);
+
+        //Save user email in local storage to be used as part of the key for storing swimmer info later
+        setLocalStorage('currentUser', email);
+
         //Redirect to user swimmer profiles page if login is successful
         window.location.href = "swimmer-profiles.html"
     } catch (err) {
         //Display error message if login is not successful
-        loginMessage.textContent = err.message;
+        loginMessage.textContent = `Something went wrong. Please try again.`;
+        console.log(err.message);
     }  
 });

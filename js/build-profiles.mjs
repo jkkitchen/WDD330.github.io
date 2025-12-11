@@ -1,4 +1,4 @@
-import { setLocalStorage } from "./functions.mjs";
+import { getLocalStorage, setLocalStorage } from "./functions.mjs";
 
 export default class SwimmerProfiles {
     //CONSTRUCTOR
@@ -125,8 +125,14 @@ export default class SwimmerProfiles {
 
     //Function that will track changes in swimmer's events to be displayed on swimmer-history.html
     recordTimesToLocalStorage(swimmerId) {
+        //Get user id to add to key to ensure only swimmers on that profile are loaded
+        const user = this.dataSource.getCurrentUser();
+        const userId = user.email;
+        
         //Retrieve swimmer event history if swimmerId exists or create an empty array if it does not
-        const historyKey = `swimmer_${swimmerId}_history`;
+        //Tag with currentUser so the information will be linked to 
+        const currentUser = getLocalStorage('currentUser');
+        const historyKey = `${currentUser}_swimmer_${swimmerId}_history`;
         const historyArray = JSON.parse(localStorage.getItem(historyKey)) || [];
 
         //Get form data

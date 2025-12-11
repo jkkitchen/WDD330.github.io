@@ -7,7 +7,8 @@ export default class SwimmerHistory {
     //METHODS -- don't need to be async becuase using localStorage
     init() {
         //Get swimmer history keys from localStorage using Object.keys(obj), a built in JS method
-        const swimmerKeys = Object.keys(localStorage).filter(key => key.startsWith('swimmer_') && key.endsWith('_history'));
+        const currentUser = getLocalStorage('currentUser');
+        const swimmerKeys = Object.keys(localStorage).filter(key => key.startsWith(`${currentUser}_swimmer_`) && key.endsWith('_history'));
 
         //Build tables
         this.renderTables(swimmerKeys);        

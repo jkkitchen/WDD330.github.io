@@ -1,4 +1,4 @@
-import { loadHeaderFooter } from "./functions.mjs";
+import { loadHeaderFooter, getLocalStorage } from "./functions.mjs";
 import { observeUserLoginChanges } from "./auth.js";
 import { lastVisitMessage } from "./last-visit.mjs";
 import SwimmerProfiles from "./build-profiles.mjs";
@@ -6,6 +6,9 @@ import MockAPIData from "./mockAPI.mjs";
 
 //Call function to load headers and footers
 loadHeaderFooter();
+
+//Get current user from local storage to be used in functions below
+const currentUser = getLocalStorage('currentUser');
 
 //Create an event listener so the last visit message will display when the page loads
 document.addEventListener("DOMContentLoaded", lastVisitMessage);
@@ -27,12 +30,13 @@ const emailDisplay = document.querySelector('#user-email');
 observeUserLoginChanges((user) => { //user is a value given by firebase, the user if they are logged in, null if they are not; it is the parameter of the callback function
     if (!user) {
         window.location.href = "index.html";
+        return;
     } else {
         emailDisplay.textContent = `Account E-mail: ${user.email}`;
     }
 
     //Load swimmers now that we know the user
-    newSwimmerProfiles.init();
+    newSwimmerProfiles.init();    
 });
 
 
@@ -40,7 +44,7 @@ observeUserLoginChanges((user) => { //user is a value given by firebase, the use
 document.getElementById('template-swimmer').addEventListener("click", async (e) => {
     //Delete Swimmer Button clicked:
     if (e.target.classList.contains('delete-swimmer-button')) {
-        const swimmerId = e.target.dataset.id;
+        const swimmerId = e.target.dataset.id;        
         try {
             await fetch(`${swimmerData.baseURL}/${swimmerId}`,
                 { method: "DELETE" });
@@ -48,7 +52,7 @@ document.getElementById('template-swimmer').addEventListener("click", async (e) 
             newSwimmerProfiles.swimmers = newSwimmerProfiles.swimmers.filter(s => s.id !== swimmerId);
 
             //Remove the deleted swimmer from localStorage for swimmer-history.html
-            localStorage.removeItem(`swimmer_${swimmerId}_history`);
+            localStorage.removeItem(`${currentUser}_swimmer_${swimmerId}_history`);
 
             //Render the profiles without the deleted one
             newSwimmerProfiles.renderAllSwimmerProfiles();
@@ -83,7 +87,16 @@ document.getElementById('add-swimmer').addEventListener('click', () => {
 document.getElementById('new-swimmer-submit').addEventListener('click', async (event) => { //make async to make sure the swimmer is added to MockAPI before form resets
     event.preventDefault();
     const form = document.querySelector('.new-swimmer-form');
-    const savedSwimmer = await newSwimmerProfiles.saveSwimmerProfile(form); //saves info to MockAPI
+
+    //Check if inputs are valid before submitting form
+    const invalidMessage = document.querySelector('#swimmer-form-message');
+    if (!form.checkValidity()) {        
+        invalidMessage.textContent = "Values input are incorrect. Please fix and submit again."
+        return;
+    }
+
+    //Saves info input in form to MockAPI
+    const savedSwimmer = await newSwimmerProfiles.saveSwimmerProfile(form);
 
     //Call function to save event time information to LocalStorage to be called on swimmer-history.html
     newSwimmerProfiles.recordTimesToLocalStorage(savedSwimmer.id);
@@ -91,4 +104,7 @@ document.getElementById('new-swimmer-submit').addEventListener('click', async (e
     //Reset and hide form    
     form.reset();
     form.classList.add('hide'); //Hides the form again since toggling removed the 'hide' class
+
+    //Hide message about errors submitting form if needed
+    invalidMessage.classList.add('hide');
 });

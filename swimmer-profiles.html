@@ -45,10 +45,10 @@
             <fieldset>
                 <legend>Swimmer Information</legend>
                 <label>First Name:
-                    <input type="text" name="fname" id="fname" pattern="[A-Za-z]+" required>
+                    <input type="text" name="fname" id="fname" pattern="[A-Za-z]+" placeholder="First Name" required>
                 </label>
                 <label>Last Name:
-                    <input type="text" name="lname" id="lname" pattern="[A-Za-z]+" required>
+                    <input type="text" name="lname" id="lname" pattern="[A-Za-z]+" placeholder="Last Name" required>
                 </label>
                 <label>Birth Date:
                     <input type="text" name="birthdate" id="birthdate" placeholder="MM/DD/YYYY"
@@ -179,6 +179,7 @@
                 <input type="submit" id="new-swimmer-submit" value="Submit Swimmer Profile">
             </div>
         </form>
+        <div id="swimmer-form-message"></div>
     </section>
 
     <footer class="footer" id="swimmer-profiles-footer"></footer>

@@ -24,8 +24,19 @@ export default class MockAPIData {
         //Use if statement to ensure user exists in the Firebase system
         if (!user) return [];
 
-        const response = await fetch(`${this.baseURL}?userId=${user.email}`);
-        return await response.json(); //use second await statement to ensure the data is returned rather than the promise
+        //Use try/catch to deal with errors if no swimmers linked to an account yet
+        try {
+            const response = await fetch(`${this.baseURL}`);            
+            const data = await response.json(); //use second await statement to ensure the data is returned rather than the promise
+
+            //Filter with user id to only get the results linked to that account (prevents error from no userId saved to MockAPI yet)
+            const userSwimmers = data.filter(s => s.userId === user.email);
+
+            return userSwimmers;
+        } catch (err) {
+            console.error(err);
+            return [];
+        }        
     }
 
     //Method to add swimmer to MockAPI
@@ -66,8 +77,18 @@ export default class MockAPIData {
         //Use if statement to ensure user exists in the Firebase system
         if (!user) return [];
 
-        const response = await fetch(`${this.baseURL}?userId=${user.email}`);
-        return await response.json(); //use second await statement to ensure the data is returned rather than the promise
+        //Use try/catch to deal with errors if no dates are linked to userId yet
+        try {
+            const response = await fetch(`${this.baseURL}`);
+            const data = await response.json(); //use second await statement to ensure the data is returned rather than the promise
+
+            //Filter with user id to only get the results linked to that account (prevents error from no userId saved to MockAPI yet)
+            const userDates = data.filter(d => d.userId === user.email);
+            return userDates;
+        } catch (err) {
+            console.error(err);
+            return [];
+        }
     }
 
     //Method to add state meet dates to MockAPI

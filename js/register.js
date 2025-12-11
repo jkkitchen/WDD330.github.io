@@ -25,6 +25,7 @@ document.querySelector("#registration-submit").addEventListener("click", async (
         window.location.href = "swimmer-profiles.html"
     } catch (err) {
         //Display error message if registration is not successful
-        registrationErrorMessage.textContent = err.message;
+        registrationErrorMessage.textContent = `Something went wrong. Please try again.`;
+        console.log(err.message);
     }  
 });
